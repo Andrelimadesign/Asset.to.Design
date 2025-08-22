@@ -532,6 +532,9 @@
     async function handleImport() {
       if (selectedFiles.length === 0) return;
       
+      // Show frame feedback with "Importing images..." message
+      showFrameFeedback(true, 'Importing images...');
+      
       updateStatus('Importing images...', 'info');
       importBtn.disabled = true;
       
@@ -598,14 +601,6 @@
       setProcessing(false);
       
       switch (msg.type) {
-                  case 'FRAME_SELECTED':
-            showFrameFeedback(true, `You selected the frame "${msg.frameName}"`);
-            break;
-            
-          case 'NO_FRAME_SELECTED':
-            showFrameFeedback(true, 'Select a frame and drop images to start importing.');
-            break;
-          
         case 'IMPORT_COMPLETE':
           const result = msg.result;
           let message = `✓ Import complete: ${result.mapped}/${result.totalImages} images applied`;
