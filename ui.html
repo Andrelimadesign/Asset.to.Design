@@ -148,10 +148,6 @@
       background: #00433D;
       color: white;
       border-color: #00433D;
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      padding: 16px 0;
     }
     
     #importBtn:hover {
@@ -310,7 +306,7 @@
     .tooltip:hover::after {
       opacity: 1;
     }
-    
+
     .frame-feedback {
       margin: 12px 0;
       padding: 12px 16px;
@@ -321,7 +317,7 @@
       line-height: 1.4;
       transition: all 0.3s ease;
     }
-    
+
     .frame-feedback .feedback-content {
       color: #00433D;
       font-weight: 500;
@@ -350,14 +346,14 @@
     <p>1- Select design to apply assets</p>
     <p>2- Drop images → click "Import Images to Layers"</p>
   </div>
-  
+
   <!-- Frame Selection Feedback -->
   <div id="frameFeedback" class="frame-feedback">
     <div class="feedback-content">
       <span id="frameFeedbackText">Select a frame and drop images to start importing.</span>
     </div>
   </div>
-  
+
   <!-- Step 1: Choose Images -->
   <div class="file-drop-zone" id="dropZone">
     <p>Drop image files here or click to browse</p>
@@ -371,7 +367,7 @@
     Import Images to Layers
   </button>
   
-  <div id="status" class="info" style="display: none;">
+  <div id="status" class="info">
     <div class="status-content">
       Select a frame and drop images to start importing.
     </div>
@@ -441,6 +437,9 @@
     
     // Initialize stats as hidden
     stats.style.display = 'none';
+
+    // Initialize frame feedback as hidden
+    frameFeedback.style.display = 'none';
     
     importBtn.onclick = handleImport;
     
@@ -450,14 +449,10 @@
     dropZone.addEventListener('drop', handleDrop);
     fileInput.addEventListener('change', handleFileSelect);
     
-    // Function to update frame feedback
-    function updateFrameFeedback(message, show = true) {
-      if (show) {
-        frameFeedbackText.textContent = message;
-        frameFeedback.style.display = 'block';
-      } else {
-        frameFeedback.style.display = 'none';
-      }
+    // Function to update status message based on frame selection
+    function updateFrameSelectionStatus() {
+      // This will be called from the plugin code when frame selection changes
+      // For now, we'll keep the default message
     }
     
     function handleDragOver(e) {
@@ -524,6 +519,15 @@
     function updateImportButton() {
       importBtn.disabled = selectedFiles.length === 0;
     }
+
+    function showFrameFeedback(show, message) {
+      if (show) {
+        frameFeedback.style.display = 'block';
+        frameFeedbackText.textContent = message;
+      } else {
+        frameFeedback.style.display = 'none';
+      }
+    }
     
     async function handleImport() {
       if (selectedFiles.length === 0) return;
@@ -564,7 +568,6 @@
         statusContent.textContent = message;
       }
       status.className = className;
-      status.style.display = 'block'; // Make sure status is visible when updated
     }
     
     function showProgress(show) {
@@ -595,13 +598,13 @@
       setProcessing(false);
       
       switch (msg.type) {
-        case 'FRAME_SELECTED':
-          updateFrameFeedback(`You have selected the frame "${msg.frameName}"`);
-          break;
-          
-        case 'NO_FRAME_SELECTED':
-          updateFrameFeedback('Select a frame and drop images to start importing.');
-          break;
+                  case 'FRAME_SELECTED':
+            showFrameFeedback(true, `You selected the frame "${msg.frameName}"`);
+            break;
+            
+          case 'NO_FRAME_SELECTED':
+            showFrameFeedback(true, 'Select a frame and drop images to start importing.');
+            break;
           
         case 'IMPORT_COMPLETE':
           const result = msg.result;
@@ -619,6 +622,7 @@
           showStats(true);
           updateStats(result.totalImages, result.mapped, result.skipped);
           importBtn.disabled = false;
+          showFrameFeedback(false, ''); // Hide feedback after import
           break;
           
         case 'PROGRESS':
@@ -630,6 +634,7 @@
           updateStatus(`Error: ${msg.message}`, 'error');
           showProgress(false);
           importBtn.disabled = false;
+          showFrameFeedback(false, ''); // Hide feedback on error
           break;
       }
     };
