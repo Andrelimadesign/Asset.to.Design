@@ -367,29 +367,23 @@
     Import Images to Layers
   </button>
   
-  <div id="status" class="info">
-    <div class="status-content">
-      Select a frame and drop images to start importing.
-    </div>
-    
-    <div class="stats" id="stats" style="display: none;">
-      <div class="stat-item">
-        <div class="stat-value" id="totalCount">0</div>
-        <div>Total</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="mappedCount">0</div>
-        <div>Mapped</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="skippedCount">0</div>
-        <div>Skipped</div>
-      </div>
-    </div>
-  </div>
-  
   <div class="progress-bar" id="progressBar" style="display: none;">
     <div class="progress-fill" id="progressFill"></div>
+  </div>
+  
+  <div class="stats" id="stats" style="display: none;">
+    <div class="stat-item">
+      <div class="stat-value" id="totalCount">0</div>
+      <div>Total</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="mappedCount">0</div>
+      <div>Mapped</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="skippedCount">0</div>
+      <div>Skipped</div>
+    </div>
   </div>
   
   <div class="logo">
@@ -416,7 +410,6 @@
   
   <script>
     const importBtn = document.getElementById('importBtn');
-    const status = document.getElementById('status');
     const progressBar = document.getElementById('progressBar');
     const progressFill = document.getElementById('progressFill');
     const stats = document.getElementById('stats');
@@ -532,9 +525,6 @@
     async function handleImport() {
       if (selectedFiles.length === 0) return;
       
-      // Show frame feedback with "Importing images..." message
-      showFrameFeedback(true, 'Importing images...');
-      
       updateStatus('Importing images...', 'info');
       importBtn.disabled = true;
       
@@ -565,12 +555,8 @@
     }
     
     function updateStatus(message, className = 'info') {
-      // Update only the status content, not the entire status div
-      const statusContent = status.querySelector('.status-content');
-      if (statusContent) {
-        statusContent.textContent = message;
-      }
-      status.className = className;
+      // Update frame feedback with status message
+      showFrameFeedback(true, message);
     }
     
     function showProgress(show) {
@@ -601,6 +587,14 @@
       setProcessing(false);
       
       switch (msg.type) {
+                  case 'FRAME_SELECTED':
+            showFrameFeedback(true, `You selected the frame "${msg.frameName}"`);
+            break;
+            
+          case 'NO_FRAME_SELECTED':
+            showFrameFeedback(true, 'Select a frame and drop images to start importing.');
+            break;
+          
         case 'IMPORT_COMPLETE':
           const result = msg.result;
           let message = `✓ Import complete: ${result.mapped}/${result.totalImages} images applied`;
@@ -612,12 +606,11 @@
             });
           }
           
-          updateStatus(message, result.mapped > 0 ? 'success' : 'error');
+          showFrameFeedback(true, message);
           showProgress(false);
           showStats(true);
           updateStats(result.totalImages, result.mapped, result.skipped);
           importBtn.disabled = false;
-          showFrameFeedback(false, ''); // Hide feedback after import
           break;
           
         case 'PROGRESS':
@@ -626,10 +619,9 @@
           break;
           
         case 'ERROR':
-          updateStatus(`Error: ${msg.message}`, 'error');
+          showFrameFeedback(true, `Error: ${msg.message}`);
           showProgress(false);
           importBtn.disabled = false;
-          showFrameFeedback(false, ''); // Hide feedback on error
           break;
       }
     };
