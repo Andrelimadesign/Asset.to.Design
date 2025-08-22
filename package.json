@@ -1,7 +1,7 @@
 {
-  "name": "copy-text-between-frames",
-  "version": "1.1.0",
-  "description": "An enhanced Figma plugin for intelligently copying text content between frames with advanced mapping algorithms, progress tracking, and better UX",
+  "name": "asset-to-design",
+  "version": "1.0.0",
+  "description": "A Figma plugin for bulk importing images and automatically mapping them to named layers with intelligent matching algorithms",
   "main": "code.js",
   "scripts": {
     "build": "tsc",
@@ -12,12 +12,12 @@
   "keywords": [
     "figma",
     "plugin",
-    "text",
-    "copy",
-    "paste",
+    "images",
+    "import",
+    "bulk-import",
     "design",
-    "typography",
-    "content-management",
+    "assets",
+    "layer-mapping",
     "design-systems"
   ],
   "author": "Andre Lima",
@@ -28,7 +28,7 @@
   },
   "figma": {
     "id": "copy-text-between-frames",
-    "name": "Copy Text Between Frames (Enhanced)"
+    "name": "Asset.to.Design"
   },
   "repository": {
     "type": "git",

@@ -1,30 +1,30 @@
-# Move.Text (Enhanced) 🚀
+# Asset.to.Design 🚀
 
-A powerful Figma plugin that intelligently copies text content between frames using advanced mapping algorithms, progress tracking, and an improved user experience.
+A powerful Figma plugin that bulk imports images and automatically maps them to named layers using intelligent matching algorithms, progress tracking, and an improved user experience.
 
 ## ✨ Features
 
-### 🎯 **Intelligent Text Mapping**
-- **Multi-strategy matching**: Uses 6 different strategies to find the best text node matches
-- **Scoring system**: Advanced algorithm that prioritizes exact matches over approximate ones
-- **Path-based matching**: Exact structural matching for identical frame layouts
-- **Name-based matching**: Fallback to layer names when structure differs
-- **Font-aware matching**: Considers font family, size, and text styles
-- **Content similarity**: Partial text matching for better accuracy
+### 🎯 **Intelligent Image Mapping**
+- **Name-based matching**: Automatically maps images to layers with matching names
+- **Smart layer detection**: Identifies all layers that can hold image fills
+- **Bulk processing**: Import multiple images at once for efficient workflows
+- **Format support**: Handles PNG, JPG, JPEG, and SVG files
+- **Progress tracking**: Real-time progress bars for large import operations
+- **Error handling**: Detailed feedback on skipped images and reasons
 
 ### 🎨 **Enhanced User Interface**
 - **Modern design**: Clean, professional interface with smooth animations
-- **Progress tracking**: Real-time progress bars for long operations
+- **Drag & drop**: Intuitive file selection with visual feedback
 - **Visual feedback**: Loading states, success indicators, and error messages
-- **Statistics display**: Shows copied, pasted, and skipped text counts
+- **Statistics display**: Shows total, mapped, and skipped image counts
 - **Tooltips**: Helpful hints for each button and feature
 - **Responsive layout**: Optimized for different screen sizes
 
 ### ⚡ **Performance Improvements**
-- **Progress reporting**: Real-time updates during font loading and text mapping
-- **Efficient algorithms**: Optimized text node traversal and matching
-- **Memory management**: Better handling of large frames and complex structures
-- **Error recovery**: Graceful handling of locked nodes and inaccessible elements
+- **Progress reporting**: Real-time updates during image processing
+- **Efficient algorithms**: Optimized layer traversal and matching
+- **Memory management**: Better handling of large images and complex frames
+- **Error recovery**: Graceful handling of unsupported layers and file types
 
 ### 🔧 **Technical Enhancements**
 - **TypeScript**: Full type safety and better development experience
@@ -41,33 +41,42 @@ A powerful Figma plugin that intelligently copies text content between frames us
 4. Load the plugin in Figma
 
 ### Usage
-1. **Copy Text**: Select a source frame and click "Copy"
-2. **Paste Text**: Select a target frame and click "Paste"
-3. **Clear Data**: Click "Clear" to remove stored copy data
+1. **Select Frame**: Choose a target frame containing named layers
+2. **Drop Images**: Drag and drop image files or click to browse
+3. **Import**: Click "Import Images to Layers" to apply images automatically
 
 ## 🏗️ Architecture
 
-### Text Mapping Strategies (in order of priority)
-1. **Path Matching** (Score: 1000) - Exact structural match
-2. **Text Style Matching** (Score: 300) - Same text style ID
-3. **Name Matching** (Score: 500) - Identical layer names
-4. **Font Family Matching** (Score: 200) - Same font family
-5. **Font Size Matching** (Score: 100) - Same font size
-6. **Content Similarity** (Score: 10 per word) - Partial text overlap
-7. **Position Similarity** (Score: 50 per level) - Similar path structure
+### Image Mapping Process
+1. **Frame Selection** - User selects target frame
+2. **Layer Indexing** - Plugin scans for named layers that support image fills
+3. **Image Processing** - Files are processed and prepared for import
+4. **Name Matching** - Images are matched to layers by filename (without extension)
+5. **Fill Application** - Images are applied as fills to matching layers
+6. **Progress Reporting** - Real-time updates during the process
+
+### Supported Layer Types
+- **Rectangle** - Primary target for image fills
+- **Frame** - Can hold image fills
+- **Ellipse** - Circular image containers
+- **Polygon** - Multi-sided shapes
+- **Star** - Star-shaped containers
+- **Vector** - Vector shapes
+- **Component** - Reusable components
+- **Instance** - Component instances
 
 ### Data Flow
 ```
-Frame Selection → Text Indexing → Font Loading → Mapping Algorithm → Text Application → Progress Reporting
+Frame Selection → Layer Indexing → Image Processing → Name Matching → Fill Application → Progress Reporting
 ```
 
 ## 📊 Performance Metrics
 
 The plugin tracks and displays:
-- **Copied**: Number of text nodes successfully copied
-- **Pasted**: Number of text nodes successfully pasted
-- **Skipped**: Number of text nodes that couldn't be processed
-- **Progress**: Real-time progress during operations
+- **Total**: Number of images selected for import
+- **Mapped**: Number of images successfully applied to layers
+- **Skipped**: Number of images that couldn't be processed
+- **Progress**: Real-time progress during import operations
 
 ## 🛠️ Development
 
@@ -79,7 +88,7 @@ The plugin tracks and displays:
 
 ### Project Structure
 ```
-copy-text-plugin/
+asset-to-design/
 ├── code.ts          # Main plugin logic
 ├── ui.html          # User interface
 ├── manifest.json    # Plugin manifest
@@ -90,17 +99,12 @@ copy-text-plugin/
 
 ## 🔄 Version History
 
-### v1.1.0 (Current)
-- ✨ Enhanced text mapping algorithms
-- 🎨 Improved UI/UX with progress tracking
-- 📊 Better statistics and feedback
-- 🚀 Performance optimizations
-- 🛠️ TypeScript improvements
-
-### v1.0.0
-- 🎯 Basic text copying between frames
-- 🔍 Simple text node mapping
-- 📱 Basic user interface
+### v1.0.0 (Current)
+- ✨ Image import to named layers
+- 🎨 Modern drag & drop interface
+- 📊 Progress tracking and statistics
+- 🚀 Intelligent layer matching
+- 🛠️ TypeScript implementation
 
 ## 🤝 Contributing
 
